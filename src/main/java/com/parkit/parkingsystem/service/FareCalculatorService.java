@@ -18,7 +18,7 @@ public class FareCalculatorService {
 
         long minutes = java.time.Duration.between(inTime, outTime).toMinutes();
 
-        if ( minutes <= 30){
+        if (minutes <= 30) {
             ticket.setPrice(0);
 
         } else {
@@ -38,7 +38,7 @@ public class FareCalculatorService {
                     throw new IllegalArgumentException("Unknown Parking Type");
             }
 
-            if ( ticket.getHaveDiscount5Percent() ){
+            if (ticket.getHaveDiscount5Percent()) {
                 double valueDiscount = ticket.getPrice() * 0.05;
                 ticket.setPrice(ticket.getPrice() - valueDiscount);
             }
