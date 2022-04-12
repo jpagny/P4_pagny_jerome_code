@@ -18,20 +18,25 @@ public class FareCalculatorService {
 
         long minutes = java.time.Duration.between(inTime, outTime).toMinutes();
 
-        //TODO: Some tests are failing here. Need to check if this logic is correct
-        double duration = Math.ceil((float) minutes / 60);
+        if ( minutes <= 30){
+            ticket.setPrice(0);
 
-        switch (ticket.getParkingSpot().getParkingType()) {
-            case CAR: {
-                ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
-                break;
+        } else {
+
+            double duration = Math.ceil((float) minutes / 60);
+
+            switch (ticket.getParkingSpot().getParkingType()) {
+                case CAR: {
+                    ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
+                    break;
+                }
+                case BIKE: {
+                    ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);
+                    break;
+                }
+                default:
+                    throw new IllegalArgumentException("Unknown Parking Type");
             }
-            case BIKE: {
-                ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);
-                break;
-            }
-            default:
-                throw new IllegalArgumentException("Unkown Parking Type");
         }
     }
 }
