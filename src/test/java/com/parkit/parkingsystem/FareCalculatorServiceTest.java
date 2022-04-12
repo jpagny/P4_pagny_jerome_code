@@ -182,6 +182,45 @@ public class FareCalculatorServiceTest {
         assertEquals(0, ticket.getPrice());
     }
 
+    @Test
+    public void calculateFareCarWithDiscount5PercentForRecurringUsersWithOneHour() {
+        Date inTime = new Date();
+        inTime.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
+        Date outTime = new Date();
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
+
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setParkingSpot(parkingSpot);
+        ticket.setHaveDiscount5Percent(true);
+        fareCalculatorService.calculateFare(ticket);
+
+        double priceDiscount = Fare.CAR_RATE_PER_HOUR * (0.05);
+
+        assertEquals((Fare.CAR_RATE_PER_HOUR - priceDiscount), ticket.getPrice());
+    }
+
+    @Test
+    public void calculateFareBikeWithDiscount5PercentForRecurringUsersWithOneHour() {
+        Date inTime = new Date();
+        inTime.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
+        Date outTime = new Date();
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
+
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setParkingSpot(parkingSpot);
+        ticket.setHaveDiscount5Percent(true);
+
+        fareCalculatorService.calculateFare(ticket);
+
+        double priceDiscount = Fare.BIKE_RATE_PER_HOUR * (0.05);
+
+        assertEquals((Fare.BIKE_RATE_PER_HOUR - priceDiscount), ticket.getPrice());
+    }
+
+
+
 
 
 }

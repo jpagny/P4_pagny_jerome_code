@@ -44,7 +44,14 @@ public class ParkingService {
                 ticket.setPrice(0);
                 ticket.setInTime(inTime);
                 ticket.setOutTime(null);
+                if ( checkIsRecurringUser(vehicleRegNumber) ){
+                    ticket.setHaveDiscount5Percent(true);
+                }
                 ticketDAO.saveTicket(ticket);
+
+                if ( ticket.getHaveDiscount5Percent() ){
+                    System.out.println("Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount.");
+                }
                 System.out.println("Generated Ticket and saved in DB");
                 System.out.println("Please park your vehicle in spot number:"+parkingSpot.getId());
                 System.out.println("Recorded in-time for vehicle number:"+vehicleRegNumber+" is:"+inTime);
@@ -116,5 +123,10 @@ public class ParkingService {
         }catch(Exception e){
             logger.error("Unable to process exiting vehicle",e);
         }
+    }
+
+    private boolean checkIsRecurringUser(String vehicleRegNumber){
+        TicketDAO ticketDAO = new TicketDAO();
+        return ticketDAO.countRecurringVehicle(vehicleRegNumber) > 0;
     }
 }
