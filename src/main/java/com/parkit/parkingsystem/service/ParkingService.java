@@ -44,9 +44,8 @@ public class ParkingService {
                 ticket.setPrice(0);
                 ticket.setInTime(inTime);
                 ticket.setOutTime(null);
-                if (checkIsRecurringUser(vehicleRegNumber)) {
-                    ticket.setHaveDiscount5Percent(true);
-                }
+                boolean isRecurringUser = checkIsRecurringUser(vehicleRegNumber);
+                ticket.setHaveDiscount5Percent(isRecurringUser);
 
                 if (!ticketDAO.saveTicket(ticket)) {
                     logger.error("Unable to save this ticket...");
@@ -132,7 +131,6 @@ public class ParkingService {
     }
 
     private boolean checkIsRecurringUser(String vehicleRegNumber) {
-        TicketDAO ticketDAO = new TicketDAO();
         return ticketDAO.countRecurringVehicle(vehicleRegNumber) > 0;
     }
 }
