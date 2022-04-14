@@ -16,15 +16,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.*;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
-
-import static java.time.Instant.ofEpochMilli;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -67,11 +60,11 @@ public class ParkingDataBaseIT {
 
         Ticket ticket = ticketDAO.getTicket(VEHICLE_REGISTRATION_NUMBER);
 
+        assertEquals(ticket.getParkingSpot().getParkingType(),ParkingType.CAR);
         assertNotNull(ticket.getVehicleRegNumber());
         assertEquals(ticket.getVehicleRegNumber(),VEHICLE_REGISTRATION_NUMBER);
         assertNotNull(ticket.getInTime());
         assertNull(ticket.getOutTime());
-        assertFalse(ticket.getHaveDiscount5Percent());
 
         assertEquals(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR),2);
     }
@@ -87,7 +80,6 @@ public class ParkingDataBaseIT {
         assertNotNull(ticket.getInTime());
         assertNotNull(ticket.getOutTime());
         assertNotNull(ticket.getPrice());
-        assertFalse(ticket.getHaveDiscount5Percent());
     }
 
 }
