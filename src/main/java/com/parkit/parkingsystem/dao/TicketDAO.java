@@ -32,7 +32,7 @@ public class TicketDAO {
             ps.setDouble(3, ticket.getPrice());
             ps.setTimestamp(4, new Timestamp(ticket.getInTime().getTime()));
             ps.setTimestamp(5, (ticket.getOutTime() == null) ? null : (new Timestamp(ticket.getOutTime().getTime())));
-            ps.setBoolean(6,ticket.getHaveDiscount5Percent());
+            ps.setBoolean(6, ticket.getHaveDiscount5Percent());
             return ps.executeUpdate() == 1;
 
         } catch (Exception ex) {

@@ -35,7 +35,7 @@ public class ParkingDataBaseSIT {
     private static InputReaderUtil inputReaderUtil;
 
     @BeforeAll
-    public static void setUp() throws Exception{
+    public static void setUp() throws Exception {
         parkingSpotDAO = new ParkingSpotDAO();
         parkingSpotDAO.dataBaseConfig = dataBaseTestConfig;
         ticketDAO = new TicketDAO();
@@ -51,7 +51,7 @@ public class ParkingDataBaseSIT {
     }
 
     @AfterAll
-    private static void tearDown(){
+    private static void tearDown() {
 
     }
 
@@ -66,14 +66,14 @@ public class ParkingDataBaseSIT {
 
         Ticket ticket = ticketDAO.getTicket(VEHICLE_REGISTRATION_NUMBER);
 
-        assertEquals(ticket.getParkingSpot().getParkingType(),ParkingType.CAR);
-        assertEquals(ticket.getVehicleRegNumber(),VEHICLE_REGISTRATION_NUMBER);
+        assertEquals(ticket.getParkingSpot().getParkingType(), ParkingType.CAR);
+        assertEquals(ticket.getVehicleRegNumber(), VEHICLE_REGISTRATION_NUMBER);
         assertEquals(ticket.getInTime().toString(), inTime);
         assertNull(ticket.getOutTime());
         assertFalse(ticket.getHaveDiscount5Percent());
-        assertEquals(ticket.getPrice(),0);
+        assertEquals(ticket.getPrice(), 0);
 
-        assertEquals(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR),2);
+        assertEquals(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR), 2);
     }
 
     @Test
@@ -88,12 +88,12 @@ public class ParkingDataBaseSIT {
 
         Ticket ticket = ticketDAO.getTicket(VEHICLE_REGISTRATION_NUMBER);
 
-        assertEquals(ticket.getParkingSpot().getParkingType(),ParkingType.CAR);
-        assertEquals(ticket.getVehicleRegNumber(),VEHICLE_REGISTRATION_NUMBER);
+        assertEquals(ticket.getParkingSpot().getParkingType(), ParkingType.CAR);
+        assertEquals(ticket.getVehicleRegNumber(), VEHICLE_REGISTRATION_NUMBER);
         assertEquals(ticket.getInTime().toString(), inTime);
         assertEquals(ticket.getOutTime().toString(), outTime);
         assertFalse(ticket.getHaveDiscount5Percent());
-        assertEquals(ticket.getPrice(),1.5);
+        assertEquals(ticket.getPrice(), 1.5);
     }
 
     @Test
@@ -113,7 +113,7 @@ public class ParkingDataBaseSIT {
 
         assertEquals(ticket.getInTime().toString(), inTime);
         assertNull(ticket.getOutTime());
-        assertEquals(ticket.getPrice(),0);
+        assertEquals(ticket.getPrice(), 0);
         assertTrue(ticket.getHaveDiscount5Percent());
     }
 
@@ -134,9 +134,9 @@ public class ParkingDataBaseSIT {
 
         Ticket ticket = ticketDAO.getTicket(VEHICLE_REGISTRATION_NUMBER);
 
-        assertEquals(ticket.getInTime().toString(),inTime);
-        assertEquals(ticket.getOutTime().toString(),outTime);
-        assertEquals(ticket.getPrice(),1.425);
+        assertEquals(ticket.getInTime().toString(), inTime);
+        assertEquals(ticket.getOutTime().toString(), outTime);
+        assertEquals(ticket.getPrice(), 1.425);
         assertTrue(ticket.getHaveDiscount5Percent());
     }
 
