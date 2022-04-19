@@ -1,19 +1,23 @@
 package com.parkit.parkingsystem.config;
 
+import com.parkit.parkingsystem.util.PropertyUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
+import java.util.Properties;
 
 public class DataBaseConfig {
 
     private static final Logger logger = LogManager.getLogger("DataBaseConfig");
+    private Properties property;
 
     public Connection getConnection() throws ClassNotFoundException, SQLException {
+        property = PropertyUtil.loadConfProperty();
         logger.info("Create DB connection");
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/parkit_prod", "root", "rootroot");
+                property.getProperty("db.prod.url"), property.getProperty("db.prod.user"), property.getProperty("db.prod.password"));
     }
 
     public void closeConnection(Connection con) {
