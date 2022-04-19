@@ -10,12 +10,12 @@ import java.util.Properties;
 public class DataBaseConfig {
 
     private static final Logger logger = LogManager.getLogger("DataBaseConfig");
-    private Properties property;
 
     public Connection getConnection() throws ClassNotFoundException, SQLException {
-        property = PropertyUtil.loadConfProperty();
+        Properties property = PropertyUtil.loadConfProperty();
         logger.info("Create DB connection");
         Class.forName("com.mysql.cj.jdbc.Driver");
+        assert property != null;
         return DriverManager.getConnection(
                 property.getProperty("db.prod.url"), property.getProperty("db.prod.user"), property.getProperty("db.prod.password"));
     }

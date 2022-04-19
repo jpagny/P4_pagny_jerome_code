@@ -13,13 +13,13 @@ import java.util.Properties;
 public class DataBaseTestConfig extends DataBaseConfig {
 
     private static final Logger logger = LogManager.getLogger("DataBaseTestConfig");
-    private Properties property;
 
     @Override
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         logger.info("Create DB connection");
         Class.forName("com.mysql.cj.jdbc.Driver");
-        property = PropertyUtil.loadConfProperty();
+        Properties property = PropertyUtil.loadConfProperty();
+        assert property != null;
         return DriverManager.getConnection(
                 property.getProperty("db.test.url"), property.getProperty("db.test.user"), property.getProperty("db.test.password"));
     }

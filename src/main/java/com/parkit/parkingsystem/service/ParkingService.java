@@ -65,7 +65,7 @@ public class ParkingService {
         }
     }
 
-    private String getVehicleRegNumber() throws Exception {
+    private String getVehicleRegNumber() {
         System.out.println("Please type the vehicle registration number and press enter key");
         return inputReaderUtil.readVehicleRegistrationNumber();
     }
