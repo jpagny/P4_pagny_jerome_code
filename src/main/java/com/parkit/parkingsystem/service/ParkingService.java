@@ -9,7 +9,7 @@ import com.parkit.parkingsystem.util.InputReaderUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class ParkingService {
 
@@ -27,7 +27,7 @@ public class ParkingService {
         this.ticketDAO = ticketDAO;
     }
 
-    public void processIncomingVehicle(Date inTime) {
+    public void processIncomingVehicle(LocalDateTime inTime) {
         try {
             ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
             if (parkingSpot != null && parkingSpot.getId() > 0) {
@@ -65,7 +65,7 @@ public class ParkingService {
         }
     }
 
-    private String getVehicleRegNumber() throws Exception {
+    private String getVehicleRegNumber() {
         System.out.println("Please type the vehicle registration number and press enter key");
         return inputReaderUtil.readVehicleRegistrationNumber();
     }
@@ -108,7 +108,7 @@ public class ParkingService {
         }
     }
 
-    public void processExitingVehicle(Date outTime) {
+    public void processExitingVehicle(LocalDateTime outTime) {
         try {
             String vehicleRegNumber = getVehicleRegNumber();
             Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
