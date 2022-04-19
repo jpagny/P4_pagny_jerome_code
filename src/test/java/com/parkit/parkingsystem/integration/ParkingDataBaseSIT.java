@@ -58,7 +58,7 @@ public class ParkingDataBaseSIT {
     }
 
     @Test
-    public void testParkingACar(){
+    public void testParkingACar() throws CloneNotSupportedException {
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String inTime = "2022-04-18 10:00:00";
@@ -79,7 +79,7 @@ public class ParkingDataBaseSIT {
     }
 
     @Test
-    public void testParkingLotExit(){
+    public void testParkingLotExit() throws CloneNotSupportedException {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String inTime = "2022-04-18 10:00:00";
         String outTime = "2022-04-18 11:00:00";

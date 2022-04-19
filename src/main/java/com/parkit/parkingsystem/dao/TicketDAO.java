@@ -35,6 +35,8 @@ public class TicketDAO {
 
         } catch (SQLException | ClassNotFoundException ex) {
             logger.error("Error fetching next available slot", ex);
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
         } finally {
             dataBaseConfig.closeConnection(con);
             dataBaseConfig.closePreparedStatement(ps);

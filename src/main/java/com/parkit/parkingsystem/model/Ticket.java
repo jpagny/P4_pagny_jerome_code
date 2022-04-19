@@ -19,8 +19,8 @@ public class Ticket {
         this.id = id;
     }
 
-    public ParkingSpot getParkingSpot() {
-        return parkingSpot;
+    public ParkingSpot getParkingSpot() throws CloneNotSupportedException {
+        return (ParkingSpot)parkingSpot.clone();
     }
 
     public void setParkingSpot(ParkingSpot parkingSpot) throws CloneNotSupportedException {
