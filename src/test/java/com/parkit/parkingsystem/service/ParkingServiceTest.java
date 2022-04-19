@@ -205,6 +205,51 @@ public class ParkingServiceTest {
 
     }
 
+    @Nested
+    @DisplayName("Tests with BIKE")
+    class BikeTest {
+
+        private ParkingSpot parkingSpot;
+        private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        private String inTime = "2022-04-18 10:00:00";
+        private Ticket ticket;
+
+        @BeforeEach
+        private void setUpPerTest() {
+            try {
+                parkingSpot = new ParkingSpot(1, ParkingType.BIKE,false);
+                parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+
+                ticket = new Ticket();
+                ticket.setInTime(LocalDateTime.parse(inTime,dtf));
+                ticket.setParkingSpot(parkingSpot);
+                ticket.setVehicleRegNumber("ABCDEF");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw  new RuntimeException("Failed to set up test mock objects");
+            }
+        }
+
+        @Test
+        public void processIncomingVehicleWithParkingSpotAvailableTest() throws Exception {
+
+            when(inputReaderUtil.readSelection()).thenReturn(2);
+            when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
+            when(parkingSpotDAO.getNextAvailableSlot(ParkingType.BIKE)).thenReturn(2);
+
+            parkingService.processIncomingVehicle(LocalDateTime.parse(inTime,dtf));
+
+            verify(ticketDAO, times(1)).saveTicket(any(Ticket.class));
+            verify(ticketDAO, times(1)).countRecurringVehicle(any(String.class));
+            verify(parkingSpotDAO, times(1)).updateParking(any(ParkingSpot.class));
+
+            assertFalse(parkingSpot.isAvailable());
+        }
+
+
+    }
+
 
 
 }
