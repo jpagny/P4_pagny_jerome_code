@@ -4,7 +4,6 @@ import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 public class FareCalculatorService {
 

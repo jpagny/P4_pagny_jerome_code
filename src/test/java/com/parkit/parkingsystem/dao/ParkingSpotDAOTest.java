@@ -23,7 +23,7 @@ public class ParkingSpotDAOTest {
     private static ParkingSpotDAO parkingSpotDAO;
 
     @BeforeAll
-    public static void setup(){
+    public static void setup() {
         parkingSpotDAO = new ParkingSpotDAO();
         parkingSpotDAO.dataBaseConfig = dataBaseTestConfig;
     }
@@ -42,26 +42,26 @@ public class ParkingSpotDAOTest {
     }
 
     @Test
-    public void should_get_next_available_slot_When_there_is_a_parking_available_slot(){
+    public void should_get_next_available_slot_When_there_is_a_parking_available_slot() {
         int result = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
-        assertEquals(result,1);
+        assertEquals(result, 1);
     }
 
     @Test
-    public void should_be_0_When_parking_type_is_not_available(){
+    public void should_be_0_When_parking_type_is_not_available() {
         setParkingSpotNoAvailable();
         int result = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
-        assertEquals(result,0);
+        assertEquals(result, 0);
     }
 
     @Test
-    public void should_be_updated_When_method_update_is_called(){
+    public void should_be_updated_When_method_update_is_called() {
         ParkingSpot parkingSpot = new ParkingSpot(1, null, true);
         assertTrue(parkingSpotDAO.updateParking(parkingSpot));
     }
 
 
-    private void setParkingSpotNoAvailable(){
+    private void setParkingSpotNoAvailable() {
         try {
             connection = dataBaseTestConfig.getConnection();
             connection.prepareStatement("update parking set available = false").execute();

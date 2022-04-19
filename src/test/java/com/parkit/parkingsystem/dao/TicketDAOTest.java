@@ -10,8 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -26,7 +24,7 @@ public class TicketDAOTest {
     private static TicketDAO ticketDAO;
 
     @BeforeAll
-    public static void setup(){
+    public static void setup() {
         ticketDAO = new TicketDAO();
         ticketDAO.dataBaseConfig = dataBaseTestConfig;
     }
@@ -52,34 +50,35 @@ public class TicketDAOTest {
         ParkingSpot parkingSpot = new ParkingSpot(1, null, false);
         Ticket ticket = new Ticket();
         ticket.setVehicleRegNumber("ABCDEF");
-        ticket.setInTime(LocalDateTime.parse(inTime,dtf));
-        ticket.setOutTime(LocalDateTime.parse(outTime,dtf));
+        ticket.setInTime(LocalDateTime.parse(inTime, dtf));
+        ticket.setOutTime(LocalDateTime.parse(outTime, dtf));
         ticket.setParkingSpot(parkingSpot);
 
         assertTrue(ticketDAO.saveTicket(ticket));
     }
 
     @Test
-    public void should_be_saved_When_outTime_is_empty() throws ParseException, CloneNotSupportedException {
+    public void should_be_saved_When_outTime_is_empty() throws CloneNotSupportedException {
         Ticket ticket = new Ticket();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String inTime = "2022-04-18 10:00:00";
         ParkingSpot parkingSpot = new ParkingSpot(1, null, false);
         ticket.setVehicleRegNumber("ABCDEF");
-        ticket.setInTime(LocalDateTime.parse(inTime,dtf));
+        ticket.setInTime(LocalDateTime.parse(inTime, dtf));
         ticket.setOutTime(null);
         ticket.setParkingSpot(parkingSpot);
 
         assertTrue(ticketDAO.saveTicket(ticket));
     }
 
-    @Test public void should_have_Ticket_When_get_ticket_with_vehicle_reg_number() throws ParseException, CloneNotSupportedException {
+    @Test
+    public void should_have_Ticket_When_get_ticket_with_vehicle_reg_number() throws CloneNotSupportedException {
         Ticket ticket = new Ticket();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String inTime = "2022-04-18 10:00:00";
         ParkingSpot parkingSpot = new ParkingSpot(1, null, false);
         ticket.setVehicleRegNumber("ABCDEF");
-        ticket.setInTime(LocalDateTime.parse(inTime,dtf));
+        ticket.setInTime(LocalDateTime.parse(inTime, dtf));
         ticket.setOutTime(null);
         ticket.setParkingSpot(parkingSpot);
 
@@ -88,8 +87,8 @@ public class TicketDAOTest {
         ticket = ticketDAO.getTicket("ABCDEF");
 
         assertNotNull(ticket);
-        assertEquals(ticket.getInTime().format(dtf),"2022-04-18 10:00:00");
-        assertEquals(ticket.getVehicleRegNumber(),"ABCDEF");
+        assertEquals(ticket.getInTime().format(dtf), "2022-04-18 10:00:00");
+        assertEquals(ticket.getVehicleRegNumber(), "ABCDEF");
     }
 
     @Test
@@ -100,48 +99,48 @@ public class TicketDAOTest {
         ParkingSpot parkingSpot = new ParkingSpot(1, null, false);
         Ticket ticket = new Ticket();
         ticket.setVehicleRegNumber("ABCDEF");
-        ticket.setInTime(LocalDateTime.parse(inTime,dtf));
+        ticket.setInTime(LocalDateTime.parse(inTime, dtf));
         ticket.setParkingSpot(parkingSpot);
 
         ticketDAO.saveTicket(ticket);
 
         ticket = ticketDAO.getTicket("ABCDEF");
 
-        assertEquals(ticket.getPrice(),0);
+        assertEquals(ticket.getPrice(), 0);
 
-        ticket.setOutTime(LocalDateTime.parse(outTime,dtf));
+        ticket.setOutTime(LocalDateTime.parse(outTime, dtf));
         ticket.setPrice(1.5);
 
         assertTrue(ticketDAO.updateTicket(ticket));
     }
 
     @Test
-    public void should_be_0_when_there_is_not_recurring_vehicle() throws ParseException, CloneNotSupportedException {
+    public void should_be_0_when_there_is_not_recurring_vehicle() throws CloneNotSupportedException {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String inTime = "2022-04-18 10:00:00";
         ParkingSpot parkingSpot = new ParkingSpot(1, null, false);
         Ticket ticket = new Ticket();
         ticket.setVehicleRegNumber("ABCDEF");
-        ticket.setInTime(LocalDateTime.parse(inTime,dtf));
+        ticket.setInTime(LocalDateTime.parse(inTime, dtf));
         ticket.setParkingSpot(parkingSpot);
 
         ticketDAO.saveTicket(ticket);
 
         int result = ticketDAO.countRecurringVehicle("ABCDEF");
 
-        assertEquals(result,0);
+        assertEquals(result, 0);
     }
 
     @Test
-    public void should_be_1_when_there_is_1_recurring_vehicle() throws ParseException, CloneNotSupportedException {
+    public void should_be_1_when_there_is_1_recurring_vehicle() throws CloneNotSupportedException {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String inTime = "2022-04-18 10:00:00";
         String outTIme = "2022-04-18 11:00:00";
         ParkingSpot parkingSpot = new ParkingSpot(1, null, false);
         Ticket ticket = new Ticket();
         ticket.setVehicleRegNumber("ABCDEF");
-        ticket.setInTime(LocalDateTime.parse(inTime,dtf));
-        ticket.setOutTime(LocalDateTime.parse(outTIme,dtf));
+        ticket.setInTime(LocalDateTime.parse(inTime, dtf));
+        ticket.setOutTime(LocalDateTime.parse(outTIme, dtf));
         ticket.setParkingSpot(parkingSpot);
 
         ticketDAO.saveTicket(ticket);
@@ -149,14 +148,14 @@ public class TicketDAOTest {
         inTime = "2022-04-18 12:00:00";
         outTIme = "2022-04-18 13:00:00";
 
-        ticket.setInTime(LocalDateTime.parse(inTime,dtf));
-        ticket.setOutTime(LocalDateTime.parse(outTIme,dtf));
+        ticket.setInTime(LocalDateTime.parse(inTime, dtf));
+        ticket.setOutTime(LocalDateTime.parse(outTIme, dtf));
 
         ticketDAO.saveTicket(ticket);
 
         int result = ticketDAO.countRecurringVehicle("ABCDEF");
 
-        assertEquals(result,2);
+        assertEquals(result, 2);
     }
 
 

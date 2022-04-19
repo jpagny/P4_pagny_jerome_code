@@ -16,8 +16,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -64,7 +62,7 @@ public class ParkingDataBaseSIT {
         String inTime = "2022-04-18 10:00:00";
 
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-        parkingService.processIncomingVehicle(LocalDateTime.parse(inTime,dtf));
+        parkingService.processIncomingVehicle(LocalDateTime.parse(inTime, dtf));
 
         Ticket ticket = ticketDAO.getTicket(VEHICLE_REGISTRATION_NUMBER);
 
@@ -85,8 +83,8 @@ public class ParkingDataBaseSIT {
         String outTime = "2022-04-18 11:00:00";
 
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-        parkingService.processIncomingVehicle(LocalDateTime.parse(inTime,dtf));
-        parkingService.processExitingVehicle(LocalDateTime.parse(outTime,dtf));
+        parkingService.processIncomingVehicle(LocalDateTime.parse(inTime, dtf));
+        parkingService.processExitingVehicle(LocalDateTime.parse(outTime, dtf));
 
         Ticket ticket = ticketDAO.getTicket(VEHICLE_REGISTRATION_NUMBER);
 
@@ -99,17 +97,17 @@ public class ParkingDataBaseSIT {
     }
 
     @Test
-    public void testParkingACarWithRecurringUser(){
+    public void testParkingACarWithRecurringUser() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String inTime = "2022-04-18 10:00:00";
         String outTime = "2022-04-18 11:00:00";
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 
-        parkingService.processIncomingVehicle(LocalDateTime.parse(inTime,dtf));
-        parkingService.processExitingVehicle(LocalDateTime.parse(outTime,dtf));
+        parkingService.processIncomingVehicle(LocalDateTime.parse(inTime, dtf));
+        parkingService.processExitingVehicle(LocalDateTime.parse(outTime, dtf));
 
         inTime = "2022-04-18 12:00:00";
-        parkingService.processIncomingVehicle(LocalDateTime.parse(inTime,dtf));
+        parkingService.processIncomingVehicle(LocalDateTime.parse(inTime, dtf));
 
         Ticket ticket = ticketDAO.getTicket(VEHICLE_REGISTRATION_NUMBER);
 
@@ -126,13 +124,13 @@ public class ParkingDataBaseSIT {
         String outTime = "2022-04-18 11:00:00";
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 
-        parkingService.processIncomingVehicle(LocalDateTime.parse(inTime,dtf));
-        parkingService.processExitingVehicle(LocalDateTime.parse(outTime,dtf));
+        parkingService.processIncomingVehicle(LocalDateTime.parse(inTime, dtf));
+        parkingService.processExitingVehicle(LocalDateTime.parse(outTime, dtf));
 
         inTime = "2022-04-18 12:00:00";
         outTime = "2022-04-18 13:00:00";
-        parkingService.processIncomingVehicle(LocalDateTime.parse(inTime,dtf));
-        parkingService.processExitingVehicle(LocalDateTime.parse(outTime,dtf));
+        parkingService.processIncomingVehicle(LocalDateTime.parse(inTime, dtf));
+        parkingService.processExitingVehicle(LocalDateTime.parse(outTime, dtf));
 
         Ticket ticket = ticketDAO.getTicket(VEHICLE_REGISTRATION_NUMBER);
 

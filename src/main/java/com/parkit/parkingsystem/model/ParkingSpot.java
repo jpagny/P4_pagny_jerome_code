@@ -2,7 +2,7 @@ package com.parkit.parkingsystem.model;
 
 import com.parkit.parkingsystem.constants.ParkingType;
 
-public class ParkingSpot implements Cloneable{
+public class ParkingSpot implements Cloneable {
     private int number;
     private ParkingType parkingType;
     private boolean isAvailable;
@@ -50,7 +50,7 @@ public class ParkingSpot implements Cloneable{
         return number;
     }
 
-    public Object clone()throws CloneNotSupportedException{
+    public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
 

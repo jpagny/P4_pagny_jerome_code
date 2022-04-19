@@ -6,8 +6,6 @@ import com.parkit.parkingsystem.model.ParkingSpot;
 import com.parkit.parkingsystem.model.Ticket;
 import org.junit.jupiter.api.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -35,8 +33,8 @@ public class FareCalculatorServiceTest {
         String inTime = "2022-04-18 10:00:00";
         String outTime = "2022-04-18 11:00:00";
         ParkingSpot parkingSpot = new ParkingSpot(1, null, false);
-        ticket.setInTime(LocalDateTime.parse(inTime,dtf));
-        ticket.setOutTime(LocalDateTime.parse(outTime,dtf));
+        ticket.setInTime(LocalDateTime.parse(inTime, dtf));
+        ticket.setOutTime(LocalDateTime.parse(outTime, dtf));
         ticket.setParkingSpot(parkingSpot);
 
         assertThrows(NullPointerException.class, () -> fareCalculatorService.calculateFare(ticket));
@@ -48,8 +46,8 @@ public class FareCalculatorServiceTest {
         String inTime = "2022-04-18 10:00:00";
         String outTime = "2022-04-18 11:00:00";
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.UNKNOWN, false);
-        ticket.setInTime(LocalDateTime.parse(inTime,dtf));
-        ticket.setOutTime(LocalDateTime.parse(outTime,dtf));
+        ticket.setInTime(LocalDateTime.parse(inTime, dtf));
+        ticket.setOutTime(LocalDateTime.parse(outTime, dtf));
         ticket.setParkingSpot(parkingSpot);
 
         assertThrows(IllegalArgumentException.class, () -> fareCalculatorService.calculateFare(ticket));
@@ -60,7 +58,7 @@ public class FareCalculatorServiceTest {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String inTime = "2022-04-18 10:00:00";
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
-        ticket.setInTime(LocalDateTime.parse(inTime,dtf));
+        ticket.setInTime(LocalDateTime.parse(inTime, dtf));
         ticket.setOutTime(null);
         ticket.setParkingSpot(parkingSpot);
 
@@ -74,8 +72,8 @@ public class FareCalculatorServiceTest {
         String inTime = "2022-04-18 12:00:00";
         String outTime = "2022-04-18 11:00:00";
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
-        ticket.setInTime(LocalDateTime.parse(inTime,dtf));
-        ticket.setOutTime(LocalDateTime.parse(outTime,dtf));
+        ticket.setInTime(LocalDateTime.parse(inTime, dtf));
+        ticket.setOutTime(LocalDateTime.parse(outTime, dtf));
         ticket.setParkingSpot(parkingSpot);
 
         assertThrows(IllegalArgumentException.class, () -> fareCalculatorService.calculateFare(ticket));
@@ -86,14 +84,14 @@ public class FareCalculatorServiceTest {
     class CarTest {
 
         @Test
-        public void calculateFareCarWithOneHourParkingTime() throws ParseException, CloneNotSupportedException {
+        public void calculateFareCarWithOneHourParkingTime() throws CloneNotSupportedException {
 
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String inTime = "2022-04-18 10:00:00";
             String outTime = "2022-04-18 11:00:00";
             ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
-            ticket.setInTime(LocalDateTime.parse(inTime,dtf));
-            ticket.setOutTime(LocalDateTime.parse(outTime,dtf));
+            ticket.setInTime(LocalDateTime.parse(inTime, dtf));
+            ticket.setOutTime(LocalDateTime.parse(outTime, dtf));
             ticket.setParkingSpot(parkingSpot);
             fareCalculatorService.calculateFare(ticket);
 
@@ -101,13 +99,13 @@ public class FareCalculatorServiceTest {
         }
 
         @Test
-        public void calculateFareCarWithLessThanOneHourParkingTime() throws ParseException, CloneNotSupportedException {
+        public void calculateFareCarWithLessThanOneHourParkingTime() throws CloneNotSupportedException {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String inTime = "2022-04-18 11:00:00";
             String outTime = "2022-04-18 11:45:00";
             ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
-            ticket.setInTime(LocalDateTime.parse(inTime,dtf));
-            ticket.setOutTime(LocalDateTime.parse(outTime,dtf));
+            ticket.setInTime(LocalDateTime.parse(inTime, dtf));
+            ticket.setOutTime(LocalDateTime.parse(outTime, dtf));
             ticket.setParkingSpot(parkingSpot);
 
             fareCalculatorService.calculateFare(ticket);
@@ -121,8 +119,8 @@ public class FareCalculatorServiceTest {
             String inTime = "2022-04-18 11:00:00";
             String outTime = "2022-04-18 12:01:00";
             ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
-            ticket.setInTime(LocalDateTime.parse(inTime,dtf));
-            ticket.setOutTime(LocalDateTime.parse(outTime,dtf));
+            ticket.setInTime(LocalDateTime.parse(inTime, dtf));
+            ticket.setOutTime(LocalDateTime.parse(outTime, dtf));
             ticket.setParkingSpot(parkingSpot);
 
             fareCalculatorService.calculateFare(ticket);
@@ -137,8 +135,8 @@ public class FareCalculatorServiceTest {
             String inTime = "2022-04-18 11:00:00";
             String outTime = "2022-04-19 11:00:00";
             ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
-            ticket.setInTime(LocalDateTime.parse(inTime,dtf));
-            ticket.setOutTime(LocalDateTime.parse(outTime,dtf));
+            ticket.setInTime(LocalDateTime.parse(inTime, dtf));
+            ticket.setOutTime(LocalDateTime.parse(outTime, dtf));
             ticket.setParkingSpot(parkingSpot);
 
             fareCalculatorService.calculateFare(ticket);
@@ -152,8 +150,8 @@ public class FareCalculatorServiceTest {
             String inTime = "2022-04-18 11:00:00";
             String outTime = "2022-04-18 11:20:00";
             ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
-            ticket.setInTime(LocalDateTime.parse(inTime,dtf));
-            ticket.setOutTime(LocalDateTime.parse(outTime,dtf));
+            ticket.setInTime(LocalDateTime.parse(inTime, dtf));
+            ticket.setOutTime(LocalDateTime.parse(outTime, dtf));
             ticket.setParkingSpot(parkingSpot);
 
             fareCalculatorService.calculateFare(ticket);
@@ -162,14 +160,14 @@ public class FareCalculatorServiceTest {
         }
 
         @Test
-        public void calculateFareCarWithDiscount5PercentForRecurringUsersWithOneHour() throws ParseException, CloneNotSupportedException {
+        public void calculateFareCarWithDiscount5PercentForRecurringUsersWithOneHour() throws CloneNotSupportedException {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String inTime = "2022-04-18 11:00:00";
             String outTime = "2022-04-18 12:00:00";
             ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
 
-            ticket.setInTime(LocalDateTime.parse(inTime,dtf));
-            ticket.setOutTime(LocalDateTime.parse(outTime,dtf));
+            ticket.setInTime(LocalDateTime.parse(inTime, dtf));
+            ticket.setOutTime(LocalDateTime.parse(outTime, dtf));
             ticket.setParkingSpot(parkingSpot);
             ticket.setHaveDiscount5Percent(true);
             fareCalculatorService.calculateFare(ticket);
@@ -186,13 +184,13 @@ public class FareCalculatorServiceTest {
     class BikeTest {
 
         @Test
-        public void calculateFareBikeWithOneHourParkingTime() throws ParseException, CloneNotSupportedException {
+        public void calculateFareBikeWithOneHourParkingTime() throws CloneNotSupportedException {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String inTime = "2022-04-18 10:00:00";
             String outTime = "2022-04-18 11:00:00";
             ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
-            ticket.setInTime(LocalDateTime.parse(inTime,dtf));
-            ticket.setOutTime(LocalDateTime.parse(outTime,dtf));
+            ticket.setInTime(LocalDateTime.parse(inTime, dtf));
+            ticket.setOutTime(LocalDateTime.parse(outTime, dtf));
             ticket.setParkingSpot(parkingSpot);
             fareCalculatorService.calculateFare(ticket);
 
@@ -205,8 +203,8 @@ public class FareCalculatorServiceTest {
             String inTime = "2022-04-18 11:00:00";
             String outTime = "2022-04-18 11:45:00";
             ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
-            ticket.setInTime(LocalDateTime.parse(inTime,dtf));
-            ticket.setOutTime(LocalDateTime.parse(outTime,dtf));
+            ticket.setInTime(LocalDateTime.parse(inTime, dtf));
+            ticket.setOutTime(LocalDateTime.parse(outTime, dtf));
             ticket.setParkingSpot(parkingSpot);
 
             fareCalculatorService.calculateFare(ticket);
@@ -220,8 +218,8 @@ public class FareCalculatorServiceTest {
             String inTime = "2022-04-18 11:00:00";
             String outTime = "2022-04-18 12:01:00";
             ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
-            ticket.setInTime(LocalDateTime.parse(inTime,dtf));
-            ticket.setOutTime(LocalDateTime.parse(outTime,dtf));
+            ticket.setInTime(LocalDateTime.parse(inTime, dtf));
+            ticket.setOutTime(LocalDateTime.parse(outTime, dtf));
             ticket.setParkingSpot(parkingSpot);
 
             fareCalculatorService.calculateFare(ticket);
@@ -236,8 +234,8 @@ public class FareCalculatorServiceTest {
             String inTime = "2022-04-18 11:00:00";
             String outTime = "2022-04-18 11:20:00";
             ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
-            ticket.setInTime(LocalDateTime.parse(inTime,dtf));
-            ticket.setOutTime(LocalDateTime.parse(outTime,dtf));
+            ticket.setInTime(LocalDateTime.parse(inTime, dtf));
+            ticket.setOutTime(LocalDateTime.parse(outTime, dtf));
             ticket.setParkingSpot(parkingSpot);
 
             fareCalculatorService.calculateFare(ticket);
@@ -246,14 +244,14 @@ public class FareCalculatorServiceTest {
         }
 
         @Test
-        public void calculateFareBikeWithDiscount5PercentForRecurringUsersWithOneHour() throws ParseException, CloneNotSupportedException {
+        public void calculateFareBikeWithDiscount5PercentForRecurringUsersWithOneHour() throws CloneNotSupportedException {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String inTime = "2022-04-18 11:00:00";
             String outTime = "2022-04-18 12:00:00";
             ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
 
-            ticket.setInTime(LocalDateTime.parse(inTime,dtf));
-            ticket.setOutTime(LocalDateTime.parse(outTime,dtf));
+            ticket.setInTime(LocalDateTime.parse(inTime, dtf));
+            ticket.setOutTime(LocalDateTime.parse(outTime, dtf));
             ticket.setParkingSpot(parkingSpot);
             ticket.setHaveDiscount5Percent(true);
 

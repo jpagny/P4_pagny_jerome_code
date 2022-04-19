@@ -20,11 +20,11 @@ public class Ticket {
     }
 
     public ParkingSpot getParkingSpot() throws CloneNotSupportedException {
-        return (ParkingSpot)parkingSpot.clone();
+        return (ParkingSpot) parkingSpot.clone();
     }
 
     public void setParkingSpot(ParkingSpot parkingSpot) throws CloneNotSupportedException {
-        this.parkingSpot = (ParkingSpot)parkingSpot.clone();
+        this.parkingSpot = (ParkingSpot) parkingSpot.clone();
     }
 
     public String getVehicleRegNumber() {

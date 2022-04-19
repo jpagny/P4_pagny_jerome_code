@@ -7,7 +7,7 @@ import java.util.Properties;
 
 public class PropertyUtil {
 
-    public static Properties loadConfProperty(){
+    public static Properties loadConfProperty() {
 
         try (InputStream input = PropertyUtil.class.getClassLoader().getResourceAsStream("configuration.properties")) {
 
