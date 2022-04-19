@@ -6,6 +6,7 @@ import com.parkit.parkingsystem.util.InputReaderUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class InteractiveShell {
@@ -27,11 +28,11 @@ public class InteractiveShell {
             int option = inputReaderUtil.readSelection();
             switch (option) {
                 case 1: {
-                    parkingService.processIncomingVehicle(new Date());
+                    parkingService.processIncomingVehicle(LocalDateTime.now());
                     break;
                 }
                 case 2: {
-                    parkingService.processExitingVehicle(new Date());
+                    parkingService.processExitingVehicle(LocalDateTime.now());
                     break;
                 }
                 case 3: {

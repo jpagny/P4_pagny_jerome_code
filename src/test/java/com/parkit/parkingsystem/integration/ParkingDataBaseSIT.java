@@ -18,6 +18,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -56,19 +58,19 @@ public class ParkingDataBaseSIT {
     }
 
     @Test
-    public void testParkingACar() throws ParseException {
+    public void testParkingACar(){
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String inTime = "2022-04-18 10:00:00.0";
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String inTime = "2022-04-18 10:00:00";
 
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-        parkingService.processIncomingVehicle(sdf.parse(inTime));
+        parkingService.processIncomingVehicle(LocalDateTime.parse(inTime,dtf));
 
         Ticket ticket = ticketDAO.getTicket(VEHICLE_REGISTRATION_NUMBER);
 
         assertEquals(ticket.getParkingSpot().getParkingType(), ParkingType.CAR);
         assertEquals(ticket.getVehicleRegNumber(), VEHICLE_REGISTRATION_NUMBER);
-        assertEquals(ticket.getInTime().toString(), inTime);
+        assertEquals(ticket.getInTime().format(dtf), inTime);
         assertNull(ticket.getOutTime());
         assertFalse(ticket.getHaveDiscount5Percent());
         assertEquals(ticket.getPrice(), 0);
@@ -77,65 +79,65 @@ public class ParkingDataBaseSIT {
     }
 
     @Test
-    public void testParkingLotExit() throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String inTime = "2022-04-18 10:00:00.0";
-        String outTime = "2022-04-18 11:00:00.0";
+    public void testParkingLotExit(){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String inTime = "2022-04-18 10:00:00";
+        String outTime = "2022-04-18 11:00:00";
 
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-        parkingService.processIncomingVehicle(sdf.parse(inTime));
-        parkingService.processExitingVehicle(sdf.parse(outTime));
+        parkingService.processIncomingVehicle(LocalDateTime.parse(inTime,dtf));
+        parkingService.processExitingVehicle(LocalDateTime.parse(outTime,dtf));
 
         Ticket ticket = ticketDAO.getTicket(VEHICLE_REGISTRATION_NUMBER);
 
         assertEquals(ticket.getParkingSpot().getParkingType(), ParkingType.CAR);
         assertEquals(ticket.getVehicleRegNumber(), VEHICLE_REGISTRATION_NUMBER);
-        assertEquals(ticket.getInTime().toString(), inTime);
-        assertEquals(ticket.getOutTime().toString(), outTime);
+        assertEquals(ticket.getInTime().format(dtf), inTime);
+        assertEquals(ticket.getOutTime().format(dtf), outTime);
         assertFalse(ticket.getHaveDiscount5Percent());
         assertEquals(ticket.getPrice(), 1.5);
     }
 
     @Test
-    public void testParkingACarWithRecurringUser() throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.0");
-        String inTime = "2022-04-18 10:00:00.0";
-        String outTime = "2022-04-18 11:00:00.0";
+    public void testParkingACarWithRecurringUser(){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String inTime = "2022-04-18 10:00:00";
+        String outTime = "2022-04-18 11:00:00";
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 
-        parkingService.processIncomingVehicle(sdf.parse(inTime));
-        parkingService.processExitingVehicle(sdf.parse(outTime));
+        parkingService.processIncomingVehicle(LocalDateTime.parse(inTime,dtf));
+        parkingService.processExitingVehicle(LocalDateTime.parse(outTime,dtf));
 
-        inTime = "2022-04-18 12:00:00.0";
-        parkingService.processIncomingVehicle(sdf.parse(inTime));
+        inTime = "2022-04-18 12:00:00";
+        parkingService.processIncomingVehicle(LocalDateTime.parse(inTime,dtf));
 
         Ticket ticket = ticketDAO.getTicket(VEHICLE_REGISTRATION_NUMBER);
 
-        assertEquals(ticket.getInTime().toString(), inTime);
+        assertEquals(ticket.getInTime().format(dtf), inTime);
         assertNull(ticket.getOutTime());
         assertEquals(ticket.getPrice(), 0);
         assertTrue(ticket.getHaveDiscount5Percent());
     }
 
     @Test
-    public void testParkingLotExitWithRecurringUser() throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.0");
-        String inTime = "2022-04-18 10:00:00.0";
-        String outTime = "2022-04-18 11:00:00.0";
+    public void testParkingLotExitWithRecurringUser() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String inTime = "2022-04-18 10:00:00";
+        String outTime = "2022-04-18 11:00:00";
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 
-        parkingService.processIncomingVehicle(sdf.parse(inTime));
-        parkingService.processExitingVehicle(sdf.parse(outTime));
+        parkingService.processIncomingVehicle(LocalDateTime.parse(inTime,dtf));
+        parkingService.processExitingVehicle(LocalDateTime.parse(outTime,dtf));
 
-        inTime = "2022-04-18 12:00:00.0";
-        outTime = "2022-04-18 13:00:00.0";
-        parkingService.processIncomingVehicle(sdf.parse(inTime));
-        parkingService.processExitingVehicle(sdf.parse(outTime));
+        inTime = "2022-04-18 12:00:00";
+        outTime = "2022-04-18 13:00:00";
+        parkingService.processIncomingVehicle(LocalDateTime.parse(inTime,dtf));
+        parkingService.processExitingVehicle(LocalDateTime.parse(outTime,dtf));
 
         Ticket ticket = ticketDAO.getTicket(VEHICLE_REGISTRATION_NUMBER);
 
-        assertEquals(ticket.getInTime().toString(), inTime);
-        assertEquals(ticket.getOutTime().toString(), outTime);
+        assertEquals(ticket.getInTime().format(dtf), inTime);
+        assertEquals(ticket.getOutTime().format(dtf), outTime);
         assertEquals(ticket.getPrice(), 1.425);
         assertTrue(ticket.getHaveDiscount5Percent());
     }

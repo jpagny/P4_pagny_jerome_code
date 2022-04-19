@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,56 +46,40 @@ public class TicketDAOTest {
 
     @Test
     public void should_be_saved_When_method_save_is_called() throws Exception {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.0");
-        String inTime = "2022-04-18 10:00:00.0";
-        String outTime = "2022-04-18 11:00:00.0";
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String inTime = "2022-04-18 10:00:00";
+        String outTime = "2022-04-18 11:00:00";
         ParkingSpot parkingSpot = new ParkingSpot(1, null, false);
         Ticket ticket = new Ticket();
         ticket.setVehicleRegNumber("ABCDEF");
-        ticket.setInTime(sdf.parse(inTime));
-        ticket.setOutTime(sdf.parse(outTime));
+        ticket.setInTime(LocalDateTime.parse(inTime,dtf));
+        ticket.setOutTime(LocalDateTime.parse(outTime,dtf));
         ticket.setParkingSpot(parkingSpot);
 
         assertTrue(ticketDAO.saveTicket(ticket));
     }
 
     @Test
-    public void should_be_throw_When_ticket_had_bad_datetime(){
-        try {
-            Ticket ticket = new Ticket();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.0");
-            String time = "2022-04-18 10:00:00.0";
-            ticket.setInTime(sdf.parse(time));
-            ticket.setOutTime(sdf.parse(time));
-
-            ticketDAO.saveTicket(ticket);
-        } catch (Exception exception){
-            assertTrue(exception instanceof IllegalArgumentException);
-            assertTrue(exception.getMessage().contains("Error fetching next available slot"));
-        }
-    }
-
-    @Test
-    public void should_be_saved_When_outTime_is_empty() throws ParseException {
+    public void should_be_saved_When_outTime_is_empty() throws ParseException, CloneNotSupportedException {
         Ticket ticket = new Ticket();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.0");
-        String inTime = "2022-04-18 10:00:00.0";
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String inTime = "2022-04-18 10:00:00";
         ParkingSpot parkingSpot = new ParkingSpot(1, null, false);
         ticket.setVehicleRegNumber("ABCDEF");
-        ticket.setInTime(sdf.parse(inTime));
+        ticket.setInTime(LocalDateTime.parse(inTime,dtf));
         ticket.setOutTime(null);
         ticket.setParkingSpot(parkingSpot);
 
         assertTrue(ticketDAO.saveTicket(ticket));
     }
 
-    @Test public void should_have_Ticket_When_get_ticket_with_vehicle_reg_number() throws ParseException {
+    @Test public void should_have_Ticket_When_get_ticket_with_vehicle_reg_number() throws ParseException, CloneNotSupportedException {
         Ticket ticket = new Ticket();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.0");
-        String inTime = "2022-04-18 10:00:00.0";
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String inTime = "2022-04-18 10:00:00";
         ParkingSpot parkingSpot = new ParkingSpot(1, null, false);
         ticket.setVehicleRegNumber("ABCDEF");
-        ticket.setInTime(sdf.parse(inTime));
+        ticket.setInTime(LocalDateTime.parse(inTime,dtf));
         ticket.setOutTime(null);
         ticket.setParkingSpot(parkingSpot);
 
@@ -102,19 +88,19 @@ public class TicketDAOTest {
         ticket = ticketDAO.getTicket("ABCDEF");
 
         assertNotNull(ticket);
-        assertEquals(ticket.getInTime().toString(),"2022-04-18 10:00:00.0");
+        assertEquals(ticket.getInTime().format(dtf),"2022-04-18 10:00:00");
         assertEquals(ticket.getVehicleRegNumber(),"ABCDEF");
     }
 
     @Test
     public void should_be_updated_When_method_updateTicket_is_called() throws Exception {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.0");
-        String inTime = "2022-04-18 10:00:00.0";
-        String outTime = "2022-04-18 11:00:00.0";
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String inTime = "2022-04-18 10:00:00";
+        String outTime = "2022-04-18 11:00:00";
         ParkingSpot parkingSpot = new ParkingSpot(1, null, false);
         Ticket ticket = new Ticket();
         ticket.setVehicleRegNumber("ABCDEF");
-        ticket.setInTime(sdf.parse(inTime));
+        ticket.setInTime(LocalDateTime.parse(inTime,dtf));
         ticket.setParkingSpot(parkingSpot);
 
         ticketDAO.saveTicket(ticket);
@@ -123,20 +109,20 @@ public class TicketDAOTest {
 
         assertEquals(ticket.getPrice(),0);
 
-        ticket.setOutTime(sdf.parse(outTime));
+        ticket.setOutTime(LocalDateTime.parse(outTime,dtf));
         ticket.setPrice(1.5);
 
         assertTrue(ticketDAO.updateTicket(ticket));
     }
 
     @Test
-    public void should_be_0_when_there_is_not_recurring_vehicle() throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.0");
-        String inTime = "2022-04-18 10:00:00.0";
+    public void should_be_0_when_there_is_not_recurring_vehicle() throws ParseException, CloneNotSupportedException {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String inTime = "2022-04-18 10:00:00";
         ParkingSpot parkingSpot = new ParkingSpot(1, null, false);
         Ticket ticket = new Ticket();
         ticket.setVehicleRegNumber("ABCDEF");
-        ticket.setInTime(sdf.parse(inTime));
+        ticket.setInTime(LocalDateTime.parse(inTime,dtf));
         ticket.setParkingSpot(parkingSpot);
 
         ticketDAO.saveTicket(ticket);
@@ -147,24 +133,24 @@ public class TicketDAOTest {
     }
 
     @Test
-    public void should_be_1_when_there_is_1_recurring_vehicle() throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.0");
-        String inTime = "2022-04-18 10:00:00.0";
-        String outTIme = "2022-04-18 11:00:00.0";
+    public void should_be_1_when_there_is_1_recurring_vehicle() throws ParseException, CloneNotSupportedException {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String inTime = "2022-04-18 10:00:00";
+        String outTIme = "2022-04-18 11:00:00";
         ParkingSpot parkingSpot = new ParkingSpot(1, null, false);
         Ticket ticket = new Ticket();
         ticket.setVehicleRegNumber("ABCDEF");
-        ticket.setInTime(sdf.parse(inTime));
-        ticket.setOutTime(sdf.parse(outTIme));
+        ticket.setInTime(LocalDateTime.parse(inTime,dtf));
+        ticket.setOutTime(LocalDateTime.parse(outTIme,dtf));
         ticket.setParkingSpot(parkingSpot);
 
         ticketDAO.saveTicket(ticket);
 
-        inTime = "2022-04-18 12:00:00.0";
-        outTIme = "2022-04-18 13:00:00.0";
+        inTime = "2022-04-18 12:00:00";
+        outTIme = "2022-04-18 13:00:00";
 
-        ticket.setInTime(sdf.parse(inTime));
-        ticket.setOutTime(sdf.parse(outTIme));
+        ticket.setInTime(LocalDateTime.parse(inTime,dtf));
+        ticket.setOutTime(LocalDateTime.parse(outTIme,dtf));
 
         ticketDAO.saveTicket(ticket);
 

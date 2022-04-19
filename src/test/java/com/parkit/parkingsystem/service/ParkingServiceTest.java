@@ -18,6 +18,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -41,8 +43,8 @@ public class ParkingServiceTest {
     class CarTest {
 
         private ParkingSpot parkingSpot;
-        private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.0");
-        private String inTime = "2022-04-18 10:00:00.0";
+        private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        private String inTime = "2022-04-18 10:00:00";
         private Ticket ticket;
 
         @BeforeEach
@@ -52,7 +54,7 @@ public class ParkingServiceTest {
                 parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 
                 ticket = new Ticket();
-                ticket.setInTime(sdf.parse(inTime));
+                ticket.setInTime(LocalDateTime.parse(inTime,dtf));
                 ticket.setParkingSpot(parkingSpot);
                 ticket.setVehicleRegNumber("ABCDEF");
 
@@ -69,7 +71,7 @@ public class ParkingServiceTest {
             when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
             when(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR)).thenReturn(2);
 
-            parkingService.processIncomingVehicle(sdf.parse(inTime));
+            parkingService.processIncomingVehicle(LocalDateTime.parse(inTime,dtf));
 
             verify(ticketDAO, times(1)).saveTicket(any(Ticket.class));
             verify(ticketDAO, times(1)).countRecurringVehicle(any(String.class));
@@ -79,13 +81,13 @@ public class ParkingServiceTest {
         }
 
         @Test
-        public void processIncomingVehicleWithParkingSpotNotAvailableTest() throws Exception {
+        public void processIncomingVehicleWithParkingSpotNotAvailableTest() {
 
             try {
                 when(inputReaderUtil.readSelection()).thenReturn(1);
                 when(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR)).thenReturn(0);
 
-                parkingService.processIncomingVehicle(sdf.parse(inTime));
+                parkingService.processIncomingVehicle(LocalDateTime.parse(inTime,dtf));
 
             } catch (Exception exception){
                 assertTrue(exception instanceof Exception);
@@ -106,7 +108,7 @@ public class ParkingServiceTest {
             when(ticketDAO.countRecurringVehicle(any(String.class))).thenReturn(4);
             when(ticketDAO.saveTicket(any(Ticket.class))).thenReturn(true);
 
-            parkingService.processIncomingVehicle(sdf.parse(inTime));
+            parkingService.processIncomingVehicle(LocalDateTime.parse(inTime,dtf));
 
             assertTrue(outContent.toString().contains("Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount."));
         }
@@ -124,7 +126,7 @@ public class ParkingServiceTest {
             when(ticketDAO.countRecurringVehicle(any(String.class))).thenReturn(0);
             when(ticketDAO.saveTicket(any(Ticket.class))).thenReturn(true);
 
-            parkingService.processIncomingVehicle(sdf.parse(inTime));
+            parkingService.processIncomingVehicle(LocalDateTime.parse(inTime,dtf));
 
             assertFalse(outContent.toString().contains("Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount."));
         }
@@ -133,15 +135,14 @@ public class ParkingServiceTest {
         public void failToProcessIncomingVehicleTest() throws Exception {
 
             try {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.0");
-                String inTime = "2022-04-18 10:00:00.0";
+                String inTime = "2022-04-18 10:00:00";
 
                 when(inputReaderUtil.readSelection()).thenReturn(1);
                 when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
                 when(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR)).thenReturn(2);
                 when(ticketDAO.saveTicket(null)).thenReturn(false);
 
-                parkingService.processIncomingVehicle(sdf.parse(inTime));
+                parkingService.processIncomingVehicle(LocalDateTime.parse(inTime,dtf));
             } catch (Exception exception){
                 assertTrue(exception instanceof Exception);
                 assertTrue(exception.getMessage().contains("Unable to process incoming vehicle"));
@@ -151,34 +152,31 @@ public class ParkingServiceTest {
         @Test
         public void processExitingVehicleTest() throws Exception {
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.0");
-            String outTime = "2022-04-18 11:00:00.0";
+            String outTime = "2022-04-18 11:00:00";
 
             when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
             when(ticketDAO.getTicket(anyString())).thenReturn(ticket);
             when(ticketDAO.updateTicket(any(Ticket.class))).thenReturn(true);
             when(parkingSpotDAO.updateParking(any(ParkingSpot.class))).thenReturn(true);
 
-            parkingService.processExitingVehicle(sdf.parse(outTime));
+            parkingService.processExitingVehicle(LocalDateTime.parse(outTime,dtf));
 
-            verify(parkingSpotDAO, Mockito.times(1)).updateParking(any(ParkingSpot.class));
             verify(ticketDAO, Mockito.times(1)).updateTicket(any(Ticket.class));
-
-            assertTrue(parkingSpot.isAvailable());
+            verify(parkingSpotDAO, Mockito.times(1)).updateParking(any(ParkingSpot.class));
         }
 
         @Test
         public void processExitingVehicleWithFailUpdateTest() throws Exception {
 
             try {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.0");
-                String outTime = "2022-04-18 11:00:00.0";
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String outTime = "2022-04-18 11:00:00";
 
                 when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
                 when(ticketDAO.getTicket(anyString())).thenReturn(ticket);
                 when(ticketDAO.updateTicket(any(Ticket.class))).thenReturn(false);
 
-                parkingService.processExitingVehicle(sdf.parse(outTime));
+                parkingService.processExitingVehicle(LocalDateTime.parse(outTime,dtf));
 
             } catch (Exception exception){
                 assertTrue(exception instanceof Exception);
@@ -190,14 +188,14 @@ public class ParkingServiceTest {
         public void failProcessExitingVehicleTest() throws Exception {
 
             try {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.0");
-                String outTime = "2022-04-18 11:00:00.0";
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String outTime = "2022-04-18 11:00:00";
 
                 when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
                 when(ticketDAO.getTicket(anyString())).thenReturn(ticket);
                 when(ticketDAO.updateTicket(null)).thenReturn(true);
 
-                parkingService.processExitingVehicle(sdf.parse(outTime));
+                parkingService.processExitingVehicle(LocalDateTime.parse(outTime,dtf));
 
             } catch (Exception exception){
                 assertTrue(exception instanceof Exception);
