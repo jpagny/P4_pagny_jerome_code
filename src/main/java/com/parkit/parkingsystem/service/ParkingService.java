@@ -131,4 +131,9 @@ public class ParkingService {
     private boolean checkIsRecurringUser(String vehicleRegNumber) {
         return ticketDAO.countRecurringVehicle(vehicleRegNumber) > 0;
     }
+
+    public InputReaderUtil getInputReaderUtil() throws CloneNotSupportedException {
+        return (InputReaderUtil)inputReaderUtil.clone();
+    }
+
 }

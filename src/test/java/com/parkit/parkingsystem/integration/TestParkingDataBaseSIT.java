@@ -43,7 +43,7 @@ public class TestParkingDataBaseSIT {
     }
 
     @BeforeEach
-    public void setUpPerTest() throws Exception {
+    public void setUpPerTest(){
         when(inputReaderUtil.readSelection()).thenReturn(1);
         when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
         dataBasePrepareService.clearDataBaseEntries();
