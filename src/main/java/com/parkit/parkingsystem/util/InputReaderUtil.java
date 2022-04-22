@@ -5,13 +5,13 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Scanner;
 
-public class InputReaderUtil {
+public class InputReaderUtil implements Cloneable {
 
-    private static final Scanner scan = new Scanner(System.in, "UTF-8");
     private static final Logger logger = LogManager.getLogger("InputReaderUtil");
 
     public int readSelection() {
         try {
+            Scanner scan = new Scanner(System.in, "UTF-8");
             return Integer.parseInt(scan.nextLine());
         } catch (Exception e) {
             logger.error("Error while reading user input from Shell", e);
@@ -22,6 +22,7 @@ public class InputReaderUtil {
 
     public String readVehicleRegistrationNumber() {
         try {
+            Scanner scan = new Scanner(System.in, "UTF-8");
             String vehicleRegNumber = scan.nextLine();
             if (vehicleRegNumber == null || vehicleRegNumber.trim().length() == 0) {
                 throw new IllegalArgumentException("Invalid input provided");
@@ -34,5 +35,8 @@ public class InputReaderUtil {
         }
     }
 
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
 }
