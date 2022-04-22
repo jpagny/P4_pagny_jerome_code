@@ -7,15 +7,11 @@ import java.util.Scanner;
 
 public class InputReaderUtil implements Cloneable {
 
-    private Scanner scan;
     private static final Logger logger = LogManager.getLogger("InputReaderUtil");
-
-    public InputReaderUtil(Scanner scan){
-        this.scan =scan;
-    }
 
     public int readSelection() {
         try {
+            Scanner scan = new Scanner(System.in, "UTF-8");
             return Integer.parseInt(scan.nextLine());
         } catch (Exception e) {
             logger.error("Error while reading user input from Shell", e);
@@ -26,6 +22,7 @@ public class InputReaderUtil implements Cloneable {
 
     public String readVehicleRegistrationNumber() {
         try {
+            Scanner scan = new Scanner(System.in, "UTF-8");
             String vehicleRegNumber = scan.nextLine();
             if (vehicleRegNumber == null || vehicleRegNumber.trim().length() == 0) {
                 throw new IllegalArgumentException("Invalid input provided");

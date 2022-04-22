@@ -1,71 +1,71 @@
 package com.parkit.parkingsystem.util;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class InputReaderUtilTest {
 
-    @Mock
-    Scanner scan;
-
-    private static InputReaderUtil input;
-
-    @BeforeEach
-    private void setUp() {
-        input = new InputReaderUtil(scan);
-    }
-
     @Test
     public void should_be_returned_an_integer_when_i_entered_an_integer_in_input_with_readSelection() {
-        when(scan.nextLine()).thenReturn("1");
+        InputReaderUtil inputOutput = new InputReaderUtil();
 
-        int result = input.readSelection();
-        assertEquals(result,1);
+        String input = "1";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        assertEquals(1, inputOutput.readSelection());
     }
 
     @Test
-    public void should_be_fail_when_i_entered_a_alpha_in_readSelection(){
+    public void should_be_fail_when_i_entered_a_alpha_in_readSelection() {
+        InputReaderUtil inputOutput = new InputReaderUtil();
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        when(scan.nextLine()).thenReturn("ABC");
-        int result = input.readSelection();
-        assertEquals(-1,result);
-        assertTrue(outContent.toString().contains("Error reading input. Please enter valid number for proceeding further"));
+        String input = "A";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        assertEquals(-1, inputOutput.readSelection());
     }
 
     @Test
     public void should_be_returned_ABC_when_i_entered_ABC_in_input_with_readVehicleRegistrationNumber() {
-        when(scan.nextLine()).thenReturn("ABC");
-        String result = input.readVehicleRegistrationNumber();
-        assertEquals(result,"ABC");
+        InputReaderUtil inputOutput = new InputReaderUtil();
+
+        String input = "ABCD";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        assertEquals("ABCD", inputOutput.readVehicleRegistrationNumber());
     }
 
     @Test
     public void should_be_fail_when_input_is_empty_with_readVehicleRegistrationNumber() {
-        when(scan.nextLine()).thenReturn("");
-        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,()-> input.readVehicleRegistrationNumber());
+        InputReaderUtil inputOutput = new InputReaderUtil();
 
-        assertEquals(thrown.getMessage(),"Invalid input provided");
+        String input = " ";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> inputOutput.readVehicleRegistrationNumber());
+
+        assertEquals(thrown.getMessage(), "Invalid input provided");
     }
 
     @Test
-    public void should_be_fail_when_input_is_null_with_readVehicleRegistrationNumber() {
-        when(scan.nextLine()).thenReturn(null);
-        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,()-> input.readVehicleRegistrationNumber());
-
-        assertEquals(thrown.getMessage(),"Invalid input provided");
+    public void should_be_cloned_when_i_used_clone() throws CloneNotSupportedException {
+        InputReaderUtil inputOutput = new InputReaderUtil();
+        assertTrue( inputOutput.clone() instanceof InputReaderUtil);
     }
 
 

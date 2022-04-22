@@ -16,9 +16,7 @@ public class App {
     public static void main(String args[]) throws CloneNotSupportedException {
         logger.info("Initializing Parking System");
 
-        Scanner scan = new Scanner(System.in, "UTF-8");
-
-        InputReaderUtil inputReaderUtil = new InputReaderUtil(scan);
+        InputReaderUtil inputReaderUtil = new InputReaderUtil();
         ParkingSpotDAO parkingSpotDAO = new ParkingSpotDAO();
         TicketDAO ticketDAO = new TicketDAO();
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
