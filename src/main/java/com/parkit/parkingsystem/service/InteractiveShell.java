@@ -1,6 +1,5 @@
 package com.parkit.parkingsystem.service;
 
-import com.parkit.parkingsystem.util.InputReaderUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,7 +15,7 @@ public class InteractiveShell {
         this.parkingService = parkingService;
 ;    }
 
-    public void loadInterface() {
+    public void loadInterface() throws CloneNotSupportedException {
         logger.info("App initialized!!!");
         System.out.println("Welcome to Parking System!");
 

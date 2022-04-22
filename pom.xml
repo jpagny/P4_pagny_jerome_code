@@ -146,7 +146,7 @@
                         <exclude>com/parkit/parkingsystem/constants/*</exclude>
                         <exclude>com/parkit/parkingsystem/config/*</exclude>
                         <exclude>com/parkit/parkingsystem/model/*</exclude>
-                        <exclude>com/parkit/parkingsystem/util/*</exclude>
+                        <exclude>com/parkit/parkingsystem/util/PropertyUtil.class</exclude>
                     </excludes>
                 </configuration>
                 <executions>

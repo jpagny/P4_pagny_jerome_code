@@ -132,8 +132,8 @@ public class ParkingService {
         return ticketDAO.countRecurringVehicle(vehicleRegNumber) > 0;
     }
 
-    public InputReaderUtil getInputReaderUtil() {
-        return inputReaderUtil;
+    public InputReaderUtil getInputReaderUtil() throws CloneNotSupportedException {
+        return (InputReaderUtil)inputReaderUtil.clone();
     }
 
 }

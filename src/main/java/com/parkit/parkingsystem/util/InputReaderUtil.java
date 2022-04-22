@@ -5,10 +5,14 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Scanner;
 
-public class InputReaderUtil {
+public class InputReaderUtil implements Cloneable {
 
-    private static final Scanner scan = new Scanner(System.in, "UTF-8");
+    private Scanner scan;
     private static final Logger logger = LogManager.getLogger("InputReaderUtil");
+
+    public InputReaderUtil(Scanner scan){
+        this.scan =scan;
+    }
 
     public int readSelection() {
         try {
@@ -34,5 +38,8 @@ public class InputReaderUtil {
         }
     }
 
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
 }

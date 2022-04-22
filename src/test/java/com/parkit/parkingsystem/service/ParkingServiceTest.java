@@ -20,8 +20,7 @@ import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -64,7 +63,7 @@ public class ParkingServiceTest {
         }
 
         @Test
-        public void processIncomingVehicleWithParkingSpotAvailableTest() throws Exception {
+        public void processIncomingVehicleWithParkingSpotAvailableTest() {
 
             when(inputReaderUtil.readSelection()).thenReturn(1);
             when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
@@ -80,29 +79,13 @@ public class ParkingServiceTest {
         }
 
         @Test
-        public void processIncomingVehicleWithParkingSpotNotAvailableTest() {
-
-            try {
-                when(inputReaderUtil.readSelection()).thenReturn(1);
-                when(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR)).thenReturn(0);
-
-                parkingService.processIncomingVehicle(LocalDateTime.parse(inTime, dtf));
-
-            } catch (Exception exception) {
-                assertTrue(exception.getMessage().contains("Error fetching parking number from DB. Parking slots might be full"));
-            }
-        }
-
-        @Test
-        public void processIncomingVehicleWithRecurringUserTest() throws Exception {
+        public void processIncomingVehicleWithRecurringUserTest() {
             ByteArrayOutputStream outContent = new ByteArrayOutputStream();
             System.setOut(new PrintStream(outContent));
 
             when(inputReaderUtil.readSelection()).thenReturn(1);
             when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
-
             when(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR)).thenReturn(2);
-
             when(ticketDAO.countRecurringVehicle(any(String.class))).thenReturn(4);
             when(ticketDAO.saveTicket(any(Ticket.class))).thenReturn(true);
 
@@ -112,15 +95,13 @@ public class ParkingServiceTest {
         }
 
         @Test
-        public void processIncomingVehicleWithoutRecurringUserTest() throws Exception {
+        public void processIncomingVehicleWithoutRecurringUserTest() {
             ByteArrayOutputStream outContent = new ByteArrayOutputStream();
             System.setOut(new PrintStream(outContent));
 
             when(inputReaderUtil.readSelection()).thenReturn(1);
             when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
-
             when(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR)).thenReturn(2);
-
             when(ticketDAO.countRecurringVehicle(any(String.class))).thenReturn(0);
             when(ticketDAO.saveTicket(any(Ticket.class))).thenReturn(true);
 
@@ -130,24 +111,7 @@ public class ParkingServiceTest {
         }
 
         @Test
-        public void failToProcessIncomingVehicleTest() {
-
-            try {
-                String inTime = "2022-04-18 10:00:00";
-
-                when(inputReaderUtil.readSelection()).thenReturn(1);
-                when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
-                when(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR)).thenReturn(2);
-                when(ticketDAO.saveTicket(null)).thenReturn(false);
-
-                parkingService.processIncomingVehicle(LocalDateTime.parse(inTime, dtf));
-            } catch (Exception exception) {
-                assertTrue(exception.getMessage().contains("Unable to process incoming vehicle"));
-            }
-        }
-
-        @Test
-        public void processExitingVehicleTest() throws Exception {
+        public void processExitingVehicleTest() {
 
             String outTime = "2022-04-18 11:00:00";
 
@@ -160,40 +124,6 @@ public class ParkingServiceTest {
 
             verify(ticketDAO, Mockito.times(1)).updateTicket(any(Ticket.class));
             verify(parkingSpotDAO, Mockito.times(1)).updateParking(any(ParkingSpot.class));
-        }
-
-        @Test
-        public void processExitingVehicleWithFailUpdateTest() {
-
-            try {
-                String outTime = "2022-04-18 11:00:00";
-
-                when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
-                when(ticketDAO.getTicket(anyString())).thenReturn(ticket);
-                when(ticketDAO.updateTicket(any(Ticket.class))).thenReturn(false);
-
-                parkingService.processExitingVehicle(LocalDateTime.parse(outTime, dtf));
-
-            } catch (Exception exception) {
-                assertTrue(exception.getMessage().contains("Unable to update ticket information. Error occurred"));
-            }
-        }
-
-        @Test
-        public void failProcessExitingVehicleTest() {
-
-            try {
-                String outTime = "2022-04-18 11:00:00";
-
-                when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
-                when(ticketDAO.getTicket(anyString())).thenReturn(ticket);
-                when(ticketDAO.updateTicket(null)).thenReturn(true);
-
-                parkingService.processExitingVehicle(LocalDateTime.parse(outTime, dtf));
-
-            } catch (Exception exception) {
-                assertTrue(exception.getMessage().contains("Unable to process exiting vehicle"));
-            }
         }
 
     }
@@ -218,7 +148,7 @@ public class ParkingServiceTest {
         }
 
         @Test
-        public void processIncomingVehicleWithParkingSpotAvailableTest() throws Exception {
+        public void processIncomingVehicleWithParkingSpotAvailableTest() {
 
             String inTime = "2022-04-18 10:00:00";
 
@@ -234,9 +164,6 @@ public class ParkingServiceTest {
 
             assertFalse(parkingSpot.isAvailable());
         }
-
-
     }
-
 
 }

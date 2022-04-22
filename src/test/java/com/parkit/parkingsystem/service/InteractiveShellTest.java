@@ -1,16 +1,10 @@
 package com.parkit.parkingsystem.service;
 
-import com.parkit.parkingsystem.constants.ParkingType;
-import com.parkit.parkingsystem.dao.ParkingSpotDAO;
-import com.parkit.parkingsystem.dao.TicketDAO;
-import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.util.InputReaderUtil;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayOutputStream;
@@ -34,7 +28,7 @@ public class InteractiveShellTest {
     private static ParkingService parkingService;
 
     @BeforeEach
-    private void setUp() {
+    private void setUp() throws CloneNotSupportedException {
         shell = new InteractiveShell(parkingService);
         when(parkingService.getInputReaderUtil()).thenReturn(inputReaderUtil);
     }
@@ -44,8 +38,8 @@ public class InteractiveShellTest {
         when(inputReaderUtil.readSelection()).thenReturn(1);
         doThrow(new IllegalArgumentException()).when(parkingService).processIncomingVehicle(any(LocalDateTime.class));
 
-        assertThrows(IllegalArgumentException.class,()->shell.loadInterface());
-        verify(parkingService,times(1)).processIncomingVehicle(any(LocalDateTime.class));
+        assertThrows(IllegalArgumentException.class, () -> shell.loadInterface());
+        verify(parkingService, times(1)).processIncomingVehicle(any(LocalDateTime.class));
     }
 
     @Test
@@ -53,12 +47,12 @@ public class InteractiveShellTest {
         when(inputReaderUtil.readSelection()).thenReturn(2);
         doThrow(new IllegalArgumentException()).when(parkingService).processExitingVehicle(any(LocalDateTime.class));
 
-        assertThrows(IllegalArgumentException.class,()->shell.loadInterface());
-        verify(parkingService,times(1)).processExitingVehicle(any(LocalDateTime.class));
+        assertThrows(IllegalArgumentException.class, () -> shell.loadInterface());
+        verify(parkingService, times(1)).processExitingVehicle(any(LocalDateTime.class));
     }
 
     @Test
-    public void should_be_stopped_when_menu_3_is_choose() {
+    public void should_be_stopped_when_menu_3_is_choose() throws CloneNotSupportedException {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
