@@ -11,10 +11,8 @@ public class InteractiveShell {
     private static final Logger logger = LogManager.getLogger("InteractiveShell");
 
     private ParkingService parkingService;
-    private InputReaderUtil inputReaderUtil;
 
-    public InteractiveShell(InputReaderUtil inputReaderUtil, ParkingService parkingService){
-        this.inputReaderUtil = inputReaderUtil;
+    public InteractiveShell(ParkingService parkingService){
         this.parkingService = parkingService;
 ;    }
 
@@ -26,7 +24,7 @@ public class InteractiveShell {
 
         while (continueApp) {
             loadMenu();
-            int option = inputReaderUtil.readSelection();
+            int option = parkingService.getInputReaderUtil().readSelection();
             switch (option) {
                 case 1: {
                     parkingService.processIncomingVehicle(LocalDateTime.now());

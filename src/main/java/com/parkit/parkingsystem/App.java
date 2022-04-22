@@ -19,7 +19,7 @@ public class App {
         TicketDAO ticketDAO = new TicketDAO();
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 
-        InteractiveShell shell = new InteractiveShell(inputReaderUtil, parkingService);
+        InteractiveShell shell = new InteractiveShell(parkingService);
         shell.loadInterface();
     }
 }

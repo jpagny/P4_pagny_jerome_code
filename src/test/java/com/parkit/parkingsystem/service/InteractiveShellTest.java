@@ -29,17 +29,14 @@ public class InteractiveShellTest {
 
     @Mock
     private static InputReaderUtil inputReaderUtil;
-    @Mock
-    private static ParkingSpotDAO parkingSpotDAO;
-    @Mock
-    private static TicketDAO ticketDAO;
 
-    @Spy
-    private static ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+    @Mock
+    private static ParkingService parkingService;
 
     @BeforeEach
     private void setUp() {
-        shell = new InteractiveShell(inputReaderUtil, parkingService);
+        shell = new InteractiveShell(parkingService);
+        when(parkingService.getInputReaderUtil()).thenReturn(inputReaderUtil);
     }
 
     @Test
