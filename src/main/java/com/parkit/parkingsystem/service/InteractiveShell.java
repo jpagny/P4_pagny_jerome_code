@@ -1,7 +1,5 @@
 package com.parkit.parkingsystem.service;
 
-import com.parkit.parkingsystem.dao.ParkingSpotDAO;
-import com.parkit.parkingsystem.dao.TicketDAO;
 import com.parkit.parkingsystem.util.InputReaderUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,15 +10,19 @@ public class InteractiveShell {
 
     private static final Logger logger = LogManager.getLogger("InteractiveShell");
 
-    public static void loadInterface() {
+    private ParkingService parkingService;
+    private InputReaderUtil inputReaderUtil;
+
+    public InteractiveShell(InputReaderUtil inputReaderUtil, ParkingService parkingService){
+        this.inputReaderUtil = inputReaderUtil;
+        this.parkingService = parkingService;
+;    }
+
+    public void loadInterface() {
         logger.info("App initialized!!!");
         System.out.println("Welcome to Parking System!");
 
         boolean continueApp = true;
-        InputReaderUtil inputReaderUtil = new InputReaderUtil();
-        ParkingSpotDAO parkingSpotDAO = new ParkingSpotDAO();
-        TicketDAO ticketDAO = new TicketDAO();
-        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 
         while (continueApp) {
             loadMenu();
@@ -45,7 +47,7 @@ public class InteractiveShell {
         }
     }
 
-    private static void loadMenu() {
+    private void loadMenu() {
         System.out.println("Please select an option. Simply enter the number to choose an action");
         System.out.println("1 New Vehicle Entering - Allocate Parking Space");
         System.out.println("2 Vehicle Exiting - Generate Ticket Price");
